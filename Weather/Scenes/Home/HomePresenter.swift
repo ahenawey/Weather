@@ -14,7 +14,7 @@ import UIKit
 
 protocol HomePresentationLogic
 {
-  func presentSomething(response: Home.Something.Response)
+  func presentBookmarkedLocations(response: Home.Location.Response)
 }
 
 class HomePresenter: HomePresentationLogic
@@ -23,9 +23,9 @@ class HomePresenter: HomePresentationLogic
   
   // MARK: Do something
   
-  func presentSomething(response: Home.Something.Response)
+  func presentBookmarkedLocations(response: Home.Location.Response)
   {
-    let viewModel = Home.Something.ViewModel()
-    viewController?.displaySomething(viewModel: viewModel)
+    let viewModel = Home.Location.ViewModel()
+    viewController?.displayBookmarkedLocations(viewModel: viewModel)
   }
 }

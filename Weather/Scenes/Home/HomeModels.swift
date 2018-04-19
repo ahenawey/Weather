@@ -12,20 +12,17 @@
 
 import UIKit
 
-enum Home
-{
-  // MARK: Use cases
-  
-  enum Something
-  {
-    struct Request
+enum Home {
+    struct Location
     {
+        struct Request
+        {
+        }
+        struct Response
+        {
+        }
+        struct ViewModel
+        {
+        }
     }
-    struct Response
-    {
-    }
-    struct ViewModel
-    {
-    }
-  }
 }

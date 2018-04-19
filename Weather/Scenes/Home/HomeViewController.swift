@@ -14,7 +14,7 @@ import UIKit
 
 protocol HomeDisplayLogic: class
 {
-  func displaySomething(viewModel: Home.Something.ViewModel)
+  func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)
 }
 
 class HomeViewController: UITableViewController, HomeDisplayLogic
@@ -69,20 +69,20 @@ class HomeViewController: UITableViewController, HomeDisplayLogic
   override func viewDidLoad()
   {
     super.viewDidLoad()
-    doSomething()
+    loadBookmarkedLocations()
   }
   
   // MARK: Do something
   
   //@IBOutlet weak var nameTextField: UITextField!
   
-  func doSomething()
+  func loadBookmarkedLocations()
   {
-    let request = Home.Something.Request()
-    interactor?.doSomething(request: request)
+    let request = Home.Location.Request()
+    interactor?.loadBookmarkedLocations(request: request)
   }
   
-  func displaySomething(viewModel: Home.Something.ViewModel)
+  func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)
   {
     //nameTextField.text = viewModel.name
   }
