@@ -24,7 +24,7 @@ protocol HomeDataStore
     var selectedCity: Home.Location.City! { get set }
 }
 
-class HomeInteractor: HomeBusinessLogic, HomeDataStore
+class HomeInteractor: HomeBusinessLogic, HomeDataStore, AddNewLocationDelegate
 {
     var presenter: HomePresentationLogic?
     var worker: HomeWorker?
@@ -81,5 +81,13 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
         
         selectedCity = city
         
+        presenter?.presentShowCityPrepared()
+    }
+    
+    // MARK: Add New Location Delegate
+    func didAddNewCity(city: Home.Location.City) {
+        self.cities.append(city)
+        let response = Home.Location.Retrieve.Response(cities: cities)
+        presenter?.presentBookmarkedLocations(response: response)
     }
 }

@@ -12,11 +12,22 @@ class UserDefaultCitiesDataStore: CitiesStoreProtocol, CitiesStoreUtilityProtoco
     
     private let citiesKeys = "cities"
     
+    private func fetchCitiesSync() throws -> [Home.Location.City] {
+        guard let rawCities = UserDefaults.standard.object(forKey: citiesKeys) as? Data else {
+            return []
+        }
+        
+        return try JSONDecoder().decode([Home.Location.City].self, from: rawCities)
+    }
+    
     func fetch(completionHandler: @escaping (Result<[Home.Location.City], CitiesStoreError>) -> ()) {
-        if let cities = UserDefaults.standard.array(forKey: citiesKeys) as? [Home.Location.City] {
+        do {
+            
+            let cities: [Home.Location.City] = try fetchCitiesSync()
+            
             completionHandler(.success(cities))
-        } else {
-            completionHandler(.success([]))
+        } catch (let error) {
+            completionHandler(.failure(.cannotFetch(error.localizedDescription)))
         }
     }
     
@@ -25,40 +36,46 @@ class UserDefaultCitiesDataStore: CitiesStoreProtocol, CitiesStoreUtilityProtoco
         var city = city
         generateCityID(city: &city)
         
-        var outputCities: [Home.Location.City]
-        
-        if let cities = UserDefaults.standard.array(forKey: citiesKeys) as? [Home.Location.City] {
-            outputCities = cities
+        do {
+            var outputCities: [Home.Location.City] = try fetchCitiesSync()
+            
             outputCities.append(city)
+            
+            let data: Data? = try JSONEncoder().encode(outputCities)
+            
+            UserDefaults.standard.set(data ,forKey: citiesKeys)
+            UserDefaults.standard.synchronize()
+            
             completionHandler(.success(city))
-        } else {
-            outputCities = [city]
-            completionHandler(.success(city))
+            
+        } catch {
+            completionHandler(.failure(.cannotCreate("")))
         }
-        UserDefaults.standard.set(outputCities ,forKey: citiesKeys)
-        UserDefaults.standard.synchronize()
     }
     
     func delete(id: String,
                 completionHandler: @escaping (Result<Home.Location.City,CitiesStoreError>)->()) {
-        var outputCities: [Home.Location.City]
-        
-        if let cities = UserDefaults.standard.array(forKey: citiesKeys) as? [Home.Location.City] {
-            outputCities = cities
-            if let id = cities.index(where: { $0.id == id }) {
+        do {
+            var outputCities: [Home.Location.City] = try fetchCitiesSync()
+            
+            if let id = outputCities.index(where: { $0.id == id }) {
                 let removedItem = outputCities.remove(at: id)
-                completionHandler(.success(removedItem))
-                UserDefaults.standard.set(outputCities ,forKey: citiesKeys)
+                let data: Data? = try JSONEncoder().encode(outputCities)
+                UserDefaults.standard.set(data ,forKey: citiesKeys)
                 UserDefaults.standard.synchronize()
-                return
+                completionHandler(.success(removedItem))
+            } else {
+                completionHandler(.failure(CitiesStoreError.cannotDelete("No Item Found with id = \(id)")))
             }
+        } catch {
+            completionHandler(.failure(.cannotDelete("")))
         }
         
-        completionHandler(.failure(CitiesStoreError.cannotDelete("No Item Found with id = \(id)")))
     }
     
     func clearCities(completionHandler: @escaping (Result<Void,CitiesStoreError>)->()) {
         UserDefaults.standard.removeObject(forKey: citiesKeys)
+        UserDefaults.standard.synchronize()
         completionHandler(.success(()))
     }
 }

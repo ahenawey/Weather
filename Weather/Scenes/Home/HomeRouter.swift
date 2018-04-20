@@ -14,34 +14,42 @@ import UIKit
 
 @objc protocol HomeRoutingLogic
 {
-  func routeToDetails(segue: UIStoryboardSegue?)
+    func routeToDetails(segue: UIStoryboardSegue?)
+    func routeToAddNewLocation(segue: UIStoryboardSegue?)
 }
 
 protocol HomeDataPassing
 {
-  var dataStore: HomeDataStore? { get }
+    var dataStore: HomeDataStore? { get }
 }
 
 class HomeRouter: NSObject, HomeRoutingLogic, HomeDataPassing
 {
-  weak var viewController: HomeViewController?
-  var dataStore: HomeDataStore?
-  
-  // MARK: Routing
-  
-  func routeToDetails(segue: UIStoryboardSegue?)
-  {
-  //  if let segue = segue {
-  //    let destinationVC = segue.destination as! SomewhereViewController
-  //    var destinationDS = destinationVC.router!.dataStore!
-  //    passDataToDetails(source: dataStore!, destination: &destinationDS)
-  //  }
-  }
-  
-  // MARK: Passing data
-  
-  //func passDataToDetails(source: HomeDataStore, destination: inout SomewhereDataStore)
-  //{
-  //  destination.name = source.name
-  //}
+    weak var viewController: HomeViewController?
+    var dataStore: HomeDataStore?
+    
+    // MARK: Routing
+    
+    func routeToAddNewLocation(segue: UIStoryboardSegue?) {
+        if let segue = segue {
+            let destinationVC = segue.destination as! AddNewLocationViewController
+            destinationVC.interactor?.delegate = viewController?.interactor
+        }
+    }
+    
+    func routeToDetails(segue: UIStoryboardSegue?)
+    {
+        //  if let segue = segue {
+        //    let destinationVC = segue.destination as! SomewhereViewController
+        //    var destinationDS = destinationVC.router!.dataStore!
+        //    passDataToDetails(source: dataStore!, destination: &destinationDS)
+        //  }
+    }
+    
+    // MARK: Passing data
+    
+    //func passDataToDetails(source: HomeDataStore, destination: inout SomewhereDataStore)
+    //{
+    //  destination.name = source.name
+    //}
 }

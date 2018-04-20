@@ -11,7 +11,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 class HomeWorker
 {
@@ -19,15 +18,6 @@ class HomeWorker
     
     init(dataSource: CitiesStoreProtocol = UserDefaultCitiesDataStore()) {
         self.dataSource = dataSource
-    }
-    
-    func addCity(city: Home.Location.City,
-                 completionHandler: @escaping (Result<Home.Location.City,CitiesStoreError>)->()) {
-        if CLLocationCoordinate2DIsValid(city.coordinates) {
-            dataSource.create(city: city, completionHandler: completionHandler)
-        } else {
-            completionHandler(.failure(CitiesStoreError.cannotCreate("Coordinates: \(city.coordinates) is not valid")))
-        }
     }
     
     func removeCity(id: String,

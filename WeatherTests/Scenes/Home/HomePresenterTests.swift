@@ -64,7 +64,7 @@ class HomePresenterTests: XCTestCase
     // Given
     let spy = HomeDisplayLogicSpy()
     sut.viewController = spy
-    let response = Home.Location.Retrieve.Response(cities: [Home.Location.City(code: 0, name: "test", coordinates: CLLocationCoordinate2D(latitude: 0, longitude: 0))])
+    let response = Home.Location.Retrieve.Response(cities: [Home.Location.City(name: "test", coordinates: CLLocationCoordinate2D(latitude: 0, longitude: 0))])
     
     // When
     sut.presentBookmarkedLocations(response: response)

@@ -18,19 +18,17 @@ enum Home {
     {
         struct City: Codable, Equatable {
             var id: String?
-            let code: Int
             let name: String
             let coordinates: CLLocationCoordinate2D
             
             enum CodingKeys: String, CodingKey {
+                case id
                 case latitude
                 case longitude
                 case name
-                case code
             }
             
-            init(code: Int, name: String,coordinates: CLLocationCoordinate2D) {
-                self.code = code
+            init(name: String,coordinates: CLLocationCoordinate2D) {
                 self.coordinates = coordinates
                 self.name = name
             }
@@ -38,8 +36,8 @@ enum Home {
             init(from decoder: Decoder) throws {
                 let values = try decoder.container(keyedBy: CodingKeys.self)
                 name = try values.decode(String.self, forKey: .name)
-                code = try values.decode(Int.self, forKey: .code)
                 
+                id = try values.decode(String?.self, forKey: .id)
                 let latitude = try values.decode(Double.self, forKey: .latitude)
                 let longitude = try values.decode(Double.self, forKey: .longitude)
                 coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -47,14 +45,14 @@ enum Home {
             
             func encode(to encoder: Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(id, forKey: .id)
                 try container.encode(coordinates.latitude, forKey: .latitude)
                 try container.encode(coordinates.longitude, forKey: .longitude)
                 try container.encode(name, forKey: .name)
-                try container.encode(code, forKey: .code)
             }
             
             public static func == (lhs: Home.Location.City, rhs: Home.Location.City) -> Bool {
-                return lhs.code == rhs.code &&
+                return lhs.id == rhs.id &&
                     lhs.name == rhs.name &&
                     lhs.coordinates.latitude == rhs.coordinates.latitude &&
                     lhs.coordinates.longitude == rhs.coordinates.longitude

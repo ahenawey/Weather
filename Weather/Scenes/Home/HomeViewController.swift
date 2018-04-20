@@ -22,7 +22,7 @@ protocol HomeDisplayLogic: class
 
 class HomeViewController: UITableViewController, HomeDisplayLogic
 {
-    var interactor: HomeBusinessLogic?
+    var interactor: (HomeBusinessLogic & AddNewLocationDelegate)?
     var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
     
     var viewModel: Home.Location.ViewModel? {
@@ -110,6 +110,7 @@ class HomeViewController: UITableViewController, HomeDisplayLogic
     
     func displayBookmarkedLocations(viewModel: Home.Location.ViewModel) {
         self.viewModel = viewModel
+        tableView.reloadData()
     }
     
     func displaySelectedCityPrepared() {
@@ -135,7 +136,7 @@ class HomeViewController: UITableViewController, HomeDisplayLogic
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
             // handle delete (by removing the data from your array and updating the tableview)
             interactor?.deleteBookmarkedLocation(request: Home.Location.Remove.Request(cityID: viewModel?.cities[indexPath.row].id))

@@ -52,13 +52,15 @@ class HomeViewControllerTests: XCTestCase
   
   // MARK: Test doubles
   
-  class HomeBusinessLogicSpy: HomeBusinessLogic
+  class HomeBusinessLogicSpy: HomeBusinessLogic, AddNewLocationDelegate
   {
     var loadBookmarkedLocationsCalled = false
     
     func deleteBookmarkedLocation(request: Home.Location.Remove.Request) {}
     
     func prepareShowingLocationInfo(request: Home.Location.View.Request) {}
+    
+    func didAddNewCity(city: Home.Location.City) {}
     
     func loadBookmarkedLocations() {
         loadBookmarkedLocationsCalled = true
