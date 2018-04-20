@@ -67,10 +67,26 @@ enum Home {
                 let city: Home.Location.City
             }
         }
+        struct View {
+            struct Request
+            {
+                let city: Home.Location.City?
+            }
+        }
         struct Remove {
             struct Request
             {
-                let city: Home.Location.City
+                let cityID: String?
+            }
+            
+            struct Response
+            {
+                let cityIndex: Int
+            }
+            struct ViewModel
+            {
+                let cityIndex: Int
+                let cityIndexPath: IndexPath
             }
         }
         struct Retrieve {
@@ -81,6 +97,18 @@ enum Home {
         }
         struct ViewModel
         {
+            var cities: [Home.Location.City]
+        }
+        
+        enum ValidationError: LocalizedError {
+            case selectedCityInvalid
+            
+            var errorDescription: String? {
+                switch self {
+                case .selectedCityInvalid:
+                    return "Selected City Invalid"
+                }
+            }
         }
     }
 }

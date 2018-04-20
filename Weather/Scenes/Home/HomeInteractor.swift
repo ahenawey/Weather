@@ -14,28 +14,72 @@ import UIKit
 
 protocol HomeBusinessLogic
 {
-  func loadBookmarkedLocations()
+    func loadBookmarkedLocations()
+    func deleteBookmarkedLocation(request: Home.Location.Remove.Request)
+    func prepareShowingLocationInfo(request: Home.Location.View.Request)
 }
 
 protocol HomeDataStore
 {
-  //var name: String { get set }
+    var selectedCity: Home.Location.City! { get set }
 }
 
 class HomeInteractor: HomeBusinessLogic, HomeDataStore
 {
-  var presenter: HomePresentationLogic?
-  var worker: HomeWorker?
-  //var name: String = ""
-  
-  // MARK: Do something
-  
-  func loadBookmarkedLocations()
-  {
-//    worker = HomeWorker()
-//    let cities = worker!.getCities()
-//    
-//    let response = Home.Location.Retrieve.Response(cities: cities)
-//    presenter?.presentBookmarkedLocations(response: response)
-  }
+    var presenter: HomePresentationLogic?
+    var worker: HomeWorker?
+    
+    var selectedCity: Home.Location.City!
+    var cities: [Home.Location.City]!
+    
+    // MARK: Do something
+    
+    func loadBookmarkedLocations()
+    {
+        worker = HomeWorker(dataSource: UserDefaultCitiesDataStore())
+        worker?.getCities(completionHandler: { [weak self] (result) in
+            switch result {
+            case .success(let cities):
+                self?.cities = cities
+                
+                let response = Home.Location.Retrieve.Response(cities: cities)
+                self?.presenter?.presentBookmarkedLocations(response: response)
+            case .failure(let error):
+                self?.presenter?.presentError(error: error)
+            }
+        })
+    }
+    func deleteBookmarkedLocation(request: Home.Location.Remove.Request) {
+        guard let cityID = request.cityID else {
+            presenter?.presentError(error: CitiesStoreError.cannotDelete("City id is invalid"))
+            return
+        }
+        
+        worker = HomeWorker(dataSource: UserDefaultCitiesDataStore())
+        worker?.removeCity(id: cityID, completionHandler: { [weak self] (result) in
+            switch result {
+            case .success(let city):
+                guard let storgSelf = self,
+                    let deletedIndex = storgSelf.cities.index(where: {$0 == city}) else {
+                        return
+                }
+                storgSelf.cities.remove(at: deletedIndex)
+                
+                let response = Home.Location.Remove.Response(cityIndex: deletedIndex)
+                self?.presenter?.presentBookmarkedLocationDeleted(response: response)
+            case .failure(let error):
+                self?.presenter?.presentError(error: error)
+            }
+        })
+    }
+    
+    func prepareShowingLocationInfo(request: Home.Location.View.Request){
+        guard let city = request.city else {
+            presenter?.presentError(error: Home.Location.ValidationError.selectedCityInvalid)
+            return
+        }
+        
+        selectedCity = city
+        
+    }
 }

@@ -14,75 +14,150 @@ import UIKit
 
 protocol HomeDisplayLogic: class
 {
-  func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)
+    func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)
+    func displaySelectedCityPrepared()
+    func displayCityDeleted(viewModel: Home.Location.Remove.ViewModel)
+    func displayError(title: String, message: String)
 }
 
 class HomeViewController: UITableViewController, HomeDisplayLogic
 {
-  var interactor: HomeBusinessLogic?
-  var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
-
-  // MARK: Object lifecycle
-  
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
-  {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    setup()
-  }
-  
-  required init?(coder aDecoder: NSCoder)
-  {
-    super.init(coder: aDecoder)
-    setup()
-  }
-  
-  // MARK: Setup
-  
-  private func setup()
-  {
-    let viewController = self
-    let interactor = HomeInteractor()
-    let presenter = HomePresenter()
-    let router = HomeRouter()
-    viewController.interactor = interactor
-    viewController.router = router
-    interactor.presenter = presenter
-    presenter.viewController = viewController
-    router.viewController = viewController
-    router.dataStore = interactor
-  }
-  
-  // MARK: Routing
-  
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-  {
-    if let scene = segue.identifier {
-      let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-      if let router = router, router.responds(to: selector) {
-        router.perform(selector, with: segue)
-      }
+    var interactor: HomeBusinessLogic?
+    var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
+    
+    var viewModel: Home.Location.ViewModel? {
+        didSet {
+            updateEmptyStateTextVisiabilty()
+        }
     }
-  }
-  
-  // MARK: View lifecycle
-  
-  override func viewDidLoad()
-  {
-    super.viewDidLoad()
-    loadBookmarkedLocations()
-  }
-  
-  // MARK: Do something
-  
-  //@IBOutlet weak var nameTextField: UITextField!
-  
-  func loadBookmarkedLocations()
-  {
-    interactor?.loadBookmarkedLocations()
-  }
-  
-  func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)
-  {
-    //nameTextField.text = viewModel.name
-  }
+    
+    // MARK: Object lifecycle
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?)
+    {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        setup()
+    }
+    
+    // MARK: Setup
+    
+    private func setup()
+    {
+        let viewController = self
+        let interactor = HomeInteractor()
+        let presenter = HomePresenter()
+        let router = HomeRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
+    }
+    
+    // MARK: Routing
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if let scene = segue.identifier {
+            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
+            if let router = router, router.responds(to: selector) {
+                router.perform(selector, with: segue)
+            }
+        }
+    }
+    
+    // MARK: View lifecycle
+    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        loadBookmarkedLocations()
+    }
+    
+    // MARK: Load Cities
+    
+    private func updateEmptyStateTextVisiabilty() {
+        guard var footerFrame = tableView.tableFooterView?.frame else {
+            return
+        }
+        
+        let size = footerFrame.size
+        
+        if let cities = viewModel?.cities,
+            cities.count > 0 {
+            let newSize = CGSize(width: size.width, height: 0)
+            footerFrame = CGRect(origin: footerFrame.origin,
+                                 size: newSize)
+        } else {
+            let newSize = CGSize(width: size.width,
+                                 height: 44)
+            footerFrame = CGRect(origin: footerFrame.origin,
+                                 size: newSize)
+        }
+        tableView.tableFooterView?.frame = footerFrame
+    }
+    
+    func loadBookmarkedLocations() {
+        interactor?.loadBookmarkedLocations()
+    }
+    
+    func displayBookmarkedLocations(viewModel: Home.Location.ViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    func displaySelectedCityPrepared() {
+        performSegue(withIdentifier: "Details", sender: nil)
+    }
+    
+    func displayCityDeleted(viewModel: Home.Location.Remove.ViewModel) {
+        tableView.beginUpdates()
+        self.viewModel?.cities.remove(at: viewModel.cityIndex)
+        tableView.deleteRows(at: [viewModel.cityIndexPath], with: .automatic)
+        tableView.endUpdates()
+        
+    }
+    
+    func displayError(title: String, message: String){
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: Table delegate and datasource
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            // handle delete (by removing the data from your array and updating the tableview)
+            interactor?.deleteBookmarkedLocation(request: Home.Location.Remove.Request(cityID: viewModel?.cities[indexPath.row].id))
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+        let model = viewModel!.cities[indexPath.row]
+        
+        cell?.textLabel?.text = model.name
+        return cell!
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel?.cities.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let city = viewModel?.cities[indexPath.row]
+        interactor?.prepareShowingLocationInfo(request: Home.Location.View.Request(city: city))
+    }
 }

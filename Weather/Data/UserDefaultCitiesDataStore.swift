@@ -54,7 +54,7 @@ class UserDefaultCitiesDataStore: CitiesStoreProtocol, CitiesStoreUtilityProtoco
             }
         }
         
-        completionHandler(.failure(.CannotDelete("No Item Found with id = \(id)")))
+        completionHandler(.failure(CitiesStoreError.cannotDelete("No Item Found with id = \(id)")))
     }
     
     func clearCities(completionHandler: @escaping (Result<Void,CitiesStoreError>)->()) {

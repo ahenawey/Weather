@@ -29,11 +29,18 @@ extension CitiesStoreUtilityProtocol
     
 }
 
-enum CitiesStoreError: Equatable, Swift.Error
+enum CitiesStoreError: Equatable, LocalizedError
 {
-    case CannotFetch(String)
-    case CannotCreate(String)
-    case CannotUpdate(String)
-    case CannotDelete(String)
+    case cannotFetch(String)
+    case cannotCreate(String)
+    case cannotUpdate(String)
+    case cannotDelete(String)
+    
+    var errorDescription: String? {
+        switch self {
+        default:
+            return "Cannot access data now, Please try again later!"
+        }
+    }
 }
 

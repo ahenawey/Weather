@@ -54,17 +54,27 @@ class HomeViewControllerTests: XCTestCase
   
   class HomeBusinessLogicSpy: HomeBusinessLogic
   {
-
-    var doSomethingCalled = false
+    var loadBookmarkedLocationsCalled = false
+    
+    func deleteBookmarkedLocation(request: Home.Location.Remove.Request) {}
+    
+    func prepareShowingLocationInfo(request: Home.Location.View.Request) {}
     
     func loadBookmarkedLocations() {
-        doSomethingCalled = true
+        loadBookmarkedLocationsCalled = true
     }
   }
+    
+    class TableViewSpy: UITableView {
+        var deletedIndexPath: IndexPath?
+        override func deleteRows(at indexPaths: [IndexPath], with animation: UITableViewRowAnimation) {
+            deletedIndexPath = indexPaths.first
+        }
+    }
   
   // MARK: Tests
   
-  func testShouldDoSomethingWhenViewIsLoaded()
+  func testShouldloadBookmarkedLocationsWhenViewIsLoaded()
   {
     // Given
     let spy = HomeBusinessLogicSpy()
@@ -74,19 +84,25 @@ class HomeViewControllerTests: XCTestCase
     loadView()
     
     // Then
-    XCTAssertTrue(spy.doSomethingCalled, "viewDidLoad() should ask the interactor to do something")
+    XCTAssertTrue(spy.loadBookmarkedLocationsCalled, "viewDidLoad() should ask the interactor to load bookmarked locations")
   }
   
-  func testDisplaySomething()
+  func testDisplayCityDeleted()
   {
     // Given
-//    let viewModel = Home.Something.ViewModel()
+    let spy = HomeBusinessLogicSpy()
+    sut.interactor = spy
+    
+    let deletedIndexPath = IndexPath(row: 0, section: 0)
+    let viewModel = Home.Location.Remove.ViewModel(cityIndex: 0, cityIndexPath: deletedIndexPath)
     
     // When
     loadView()
-//    sut.displaySomething(viewModel: viewModel)
+    let tableViewSpy = TableViewSpy()
+    sut.tableView = tableViewSpy
+    sut.displayCityDeleted(viewModel: viewModel)
     
     // Then
-    //XCTAssertEqual(sut.nameTextField.text, "", "displaySomething(viewModel:) should update the name text field")
+    XCTAssertEqual(tableViewSpy.deletedIndexPath, deletedIndexPath, "testDisplayCityDeleted(viewModel:) should call deleteRows(at indexPaths: , with animation: ) ")
   }
 }

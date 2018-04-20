@@ -43,26 +43,32 @@ class HomeInteractorTests: XCTestCase
   
   class HomePresentationLogicSpy: HomePresentationLogic
   {
-    var presentSomethingCalled = false
+    
+    var presentBookmarkedLocationsCalled = false
+    
+    func presentBookmarkedLocationDeleted(response: Home.Location.Remove.Response) {}
+    
+    func presentShowCityPrepared() {}
+    
+    func presentError(error: LocalizedError) {}
     
     func presentBookmarkedLocations(response: Home.Location.Retrieve.Response) {
-        presentSomethingCalled = true
+        presentBookmarkedLocationsCalled = true
     }
   }
   
   // MARK: Tests
   
-  func testDoSomething()
+  func testLoadBookmarkedLocations()
   {
     // Given
     let spy = HomePresentationLogicSpy()
     sut.presenter = spy
-//    let request = Home.Something.Request()
     
     // When
-//    sut.doSomething(request: request)
+    sut.loadBookmarkedLocations()
     
     // Then
-    XCTAssertTrue(spy.presentSomethingCalled, "doSomething(request:) should ask the presenter to format the result")
+    XCTAssertTrue(spy.presentBookmarkedLocationsCalled, "doSomething(request:) should ask the presenter to format the result")
   }
 }

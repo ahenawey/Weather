@@ -14,18 +14,34 @@ import UIKit
 
 protocol HomePresentationLogic
 {
-  func presentBookmarkedLocations(response: Home.Location.Retrieve.Response)
+    func presentBookmarkedLocations(response: Home.Location.Retrieve.Response)
+    func presentBookmarkedLocationDeleted(response: Home.Location.Remove.Response)
+    func presentShowCityPrepared()
+    func presentError(error: LocalizedError)
 }
 
 class HomePresenter: HomePresentationLogic
 {
-  weak var viewController: HomeDisplayLogic?
-  
-  // MARK: Do something
-  
-  func presentBookmarkedLocations(response: Home.Location.Retrieve.Response)
-  {
-    let viewModel = Home.Location.ViewModel()
-    viewController?.displayBookmarkedLocations(viewModel: viewModel)
-  }
+    weak var viewController: HomeDisplayLogic?
+    
+    // MARK: Do something
+    
+    func presentBookmarkedLocations(response: Home.Location.Retrieve.Response)
+    {
+        let viewModel = Home.Location.ViewModel(cities: response.cities)
+        viewController?.displayBookmarkedLocations(viewModel: viewModel)
+    }
+    
+    func presentBookmarkedLocationDeleted(response: Home.Location.Remove.Response) {
+        let viewModel = Home.Location.Remove.ViewModel(cityIndex: response.cityIndex, cityIndexPath: IndexPath(row: response.cityIndex, section: 0))
+        viewController?.displayCityDeleted(viewModel: viewModel)
+    }
+    
+    func presentError(error: LocalizedError) {
+        viewController?.displayError(title: NSLocalizedString("Error", comment: "Error"), message: error.localizedDescription)
+    }
+    
+    func presentShowCityPrepared() {
+        viewController?.displaySelectedCityPrepared()
+    }
 }

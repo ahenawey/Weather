@@ -26,7 +26,7 @@ class HomeWorker
         if CLLocationCoordinate2DIsValid(city.coordinates) {
             dataSource.create(city: city, completionHandler: completionHandler)
         } else {
-            completionHandler(.failure(.CannotCreate("Coordinates: \(city.coordinates) is not valid")))
+            completionHandler(.failure(CitiesStoreError.cannotCreate("Coordinates: \(city.coordinates) is not valid")))
         }
     }
     

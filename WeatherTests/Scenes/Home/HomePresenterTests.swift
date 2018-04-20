@@ -12,6 +12,7 @@
 
 @testable import Weather
 import XCTest
+import CoreLocation
 
 class HomePresenterTests: XCTestCase
 {
@@ -43,26 +44,32 @@ class HomePresenterTests: XCTestCase
   
   class HomeDisplayLogicSpy: HomeDisplayLogic
   {
-    var displaySomethingCalled = false
+    var displayBookmarkedLocationsCalled = false
+    
+    func displaySelectedCityPrepared() {}
+    
+    func displayCityDeleted(viewModel: Home.Location.Remove.ViewModel) {}
+    
+    func displayError(title: String, message: String) {}
     
     func displayBookmarkedLocations(viewModel: Home.Location.ViewModel) {
-        displaySomethingCalled = true
+        displayBookmarkedLocationsCalled = true
     }
   }
   
   // MARK: Tests
   
-  func testPresentSomething()
+  func testPresentBookmarkedLocations()
   {
     // Given
     let spy = HomeDisplayLogicSpy()
     sut.viewController = spy
-//    let response = Home.Location.Retrieve.Response()
+    let response = Home.Location.Retrieve.Response(cities: [Home.Location.City(code: 0, name: "test", coordinates: CLLocationCoordinate2D(latitude: 0, longitude: 0))])
     
     // When
-//    sut.presentSomething(response: response)
+    sut.presentBookmarkedLocations(response: response)
     
     // Then
-    XCTAssertTrue(spy.displaySomethingCalled, "presentSomething(response:) should ask the view controller to display the result")
+    XCTAssertTrue(spy.displayBookmarkedLocationsCalled, "presentSomething(response:) should ask the view controller to display the result")
   }
 }
