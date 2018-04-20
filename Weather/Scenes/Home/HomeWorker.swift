@@ -11,10 +11,36 @@
 //
 
 import UIKit
+import CoreLocation
 
 class HomeWorker
 {
-  func doSomeWork()
-  {
-  }
+    fileprivate let dataSource: CitiesStoreProtocol
+    
+    init(dataSource: CitiesStoreProtocol = UserDefaultCitiesDataStore()) {
+        self.dataSource = dataSource
+    }
+    
+    func addCity(city: Home.Location.City,
+                 completionHandler: @escaping (Result<Home.Location.City,CitiesStoreError>)->()) {
+        if CLLocationCoordinate2DIsValid(city.coordinates) {
+            dataSource.create(city: city, completionHandler: completionHandler)
+        } else {
+            completionHandler(.failure(.CannotCreate("Coordinates: \(city.coordinates) is not valid")))
+        }
+    }
+    
+    func removeCity(id: String,
+                    completionHandler: @escaping (Result<Home.Location.City,CitiesStoreError>)->()) {
+        dataSource.delete(id: id, completionHandler: completionHandler)
+    }
+    
+    func removeAllCities(completionHandler: @escaping (Result<Void,CitiesStoreError>)->()) {
+        dataSource.clearCities(completionHandler: completionHandler)
+    }
+    
+    func getCities(completionHandler: @escaping (Result<[Home.Location.City],CitiesStoreError>)->()) {
+        dataSource.fetch(completionHandler: completionHandler)
+    }
+    
 }

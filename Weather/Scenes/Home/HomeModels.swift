@@ -11,15 +11,73 @@
 //
 
 import UIKit
+import CoreLocation
 
 enum Home {
     struct Location
     {
-        struct Request
-        {
+        struct City: Codable, Equatable {
+            var id: String?
+            let code: Int
+            let name: String
+            let coordinates: CLLocationCoordinate2D
+            
+            enum CodingKeys: String, CodingKey {
+                case latitude
+                case longitude
+                case name
+                case code
+            }
+            
+            init(code: Int, name: String,coordinates: CLLocationCoordinate2D) {
+                self.code = code
+                self.coordinates = coordinates
+                self.name = name
+            }
+            
+            init(from decoder: Decoder) throws {
+                let values = try decoder.container(keyedBy: CodingKeys.self)
+                name = try values.decode(String.self, forKey: .name)
+                code = try values.decode(Int.self, forKey: .code)
+                
+                let latitude = try values.decode(Double.self, forKey: .latitude)
+                let longitude = try values.decode(Double.self, forKey: .longitude)
+                coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            }
+            
+            func encode(to encoder: Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(coordinates.latitude, forKey: .latitude)
+                try container.encode(coordinates.longitude, forKey: .longitude)
+                try container.encode(name, forKey: .name)
+                try container.encode(code, forKey: .code)
+            }
+            
+            public static func == (lhs: Home.Location.City, rhs: Home.Location.City) -> Bool {
+                return lhs.code == rhs.code &&
+                    lhs.name == rhs.name &&
+                    lhs.coordinates.latitude == rhs.coordinates.latitude &&
+                    lhs.coordinates.longitude == rhs.coordinates.longitude
+            }
         }
-        struct Response
-        {
+        
+        struct Add {
+            struct Request
+            {
+                let city: Home.Location.City
+            }
+        }
+        struct Remove {
+            struct Request
+            {
+                let city: Home.Location.City
+            }
+        }
+        struct Retrieve {
+            struct Response
+            {
+                let cities: [Home.Location.City]
+            }
         }
         struct ViewModel
         {

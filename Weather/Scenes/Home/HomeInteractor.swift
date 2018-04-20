@@ -14,7 +14,7 @@ import UIKit
 
 protocol HomeBusinessLogic
 {
-  func loadBookmarkedLocations(request: Home.Location.Request)
+  func loadBookmarkedLocations()
 }
 
 protocol HomeDataStore
@@ -30,12 +30,12 @@ class HomeInteractor: HomeBusinessLogic, HomeDataStore
   
   // MARK: Do something
   
-  func loadBookmarkedLocations(request: Home.Location.Request)
+  func loadBookmarkedLocations()
   {
-    worker = HomeWorker()
-    worker?.doSomeWork()
-    
-    let response = Home.Location.Response()
-    presenter?.presentBookmarkedLocations(response: response)
+//    worker = HomeWorker()
+//    let cities = worker!.getCities()
+//    
+//    let response = Home.Location.Retrieve.Response(cities: cities)
+//    presenter?.presentBookmarkedLocations(response: response)
   }
 }

@@ -78,8 +78,7 @@ class HomeViewController: UITableViewController, HomeDisplayLogic
   
   func loadBookmarkedLocations()
   {
-    let request = Home.Location.Request()
-    interactor?.loadBookmarkedLocations(request: request)
+    interactor?.loadBookmarkedLocations()
   }
   
   func displayBookmarkedLocations(viewModel: Home.Location.ViewModel)

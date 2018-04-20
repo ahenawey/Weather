@@ -12,43 +12,145 @@
 
 @testable import Weather
 import XCTest
+import CoreLocation
 
 class HomeWorkerTests: XCTestCase
 {
-  // MARK: Subject under test
-  
-  var sut: HomeWorker!
-  
-  // MARK: Test lifecycle
-  
-  override func setUp()
-  {
-    super.setUp()
-    setupHomeWorker()
-  }
-  
-  override func tearDown()
-  {
-    super.tearDown()
-  }
-  
-  // MARK: Test setup
-  
-  func setupHomeWorker()
-  {
-    sut = HomeWorker()
-  }
-  
-  // MARK: Test doubles
-  
-  // MARK: Tests
-  
-  func testSomething()
-  {
-    // Given
+    // MARK: Subject under test
     
-    // When
+    var sut: HomeWorker!
+    var mockDataSource: MockCityDataSource!
     
-    // Then
-  }
+    // MARK: Test lifecycle
+    
+    override func setUp()
+    {
+        super.setUp()
+        setupHomeWorker()
+    }
+    
+    override func tearDown()
+    {
+        super.tearDown()
+    }
+    
+    // MARK: Test setup
+    
+    func setupHomeWorker()
+    {
+        mockDataSource = MockCityDataSource()
+        sut = HomeWorker(dataSource: mockDataSource)
+    }
+    
+    // MARK: Test doubles
+    
+    // MARK: Tests
+    
+    func testAddCity()
+    {
+        // Given
+        let expect = expectation(description: "Wait Until Add")
+        let coordinates = CLLocationCoordinate2D(latitude: 52.336081, longitude: 4.887131)
+        let city = Home.Location.City(code: 1, name: "Mobiquity", coordinates: coordinates)
+        // When
+        sut.addCity(city: city) { _ in
+            expect.fulfill()
+        }
+        self.waitForExpectations(timeout: 1)
+        // Then
+        assert(mockDataSource.createIsCalled, "Add City Called as expected")
+    }
+    
+    func testAddCityFailed()
+    {
+        // Given
+        let expect = expectation(description: "Wait Until Add")
+        let coordinates = CLLocationCoordinate2D(latitude: 190, longitude: 190)
+        let city = Home.Location.City(code: 1, name: "Mobiquity", coordinates: coordinates)
+        // When
+        sut.addCity(city: city) { _ in
+            expect.fulfill()
+        }
+        self.waitForExpectations(timeout: 1)
+        // Then
+        assert(mockDataSource.createIsCalled == false, "Add City Called as expected")
+    }
+    
+    func testRemoveAllCities()
+    {
+        // Given
+        let expect = expectation(description: "Wait Until delete")
+        // When
+        sut.removeAllCities { _ in
+            expect.fulfill()
+        }
+        self.waitForExpectations(timeout: 1)
+        // Then
+        assert(mockDataSource.clearCitiesIsCalled, "All Cities did not removed as expected")
+    }
+    
+    func testRemoveCity()
+    {
+        // Given
+        let expect = expectation(description: "Wait Until delete")
+        // When
+        sut.removeCity(id: "1") { _ in
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+        // Then
+        assert(mockDataSource.deleteIsCalled, "City did not removed as expected")
+        
+    }
+    
+    func testLoadCitiesAfterAdding()
+    {
+        // Given
+        let expect = expectation(description: "Wait Until delete")
+        // When
+        sut.getCities { _ in
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+        // Then
+        assert(mockDataSource.fetchIsCalled, "City did not added as expected")
+    }
+    
+    
+}
+
+class MockCityDataSource: CitiesStoreProtocol, CitiesStoreUtilityProtocol {
+    
+    fileprivate var cities: [String: Home.Location.City] = [:]
+    
+    var fetchIsCalled: Bool = false
+    var createIsCalled: Bool = false
+    var deleteIsCalled: Bool = false
+    var clearCitiesIsCalled: Bool = false
+    
+    
+    func fetch(completionHandler: @escaping (Result<[Home.Location.City], CitiesStoreError>) -> ()) {
+        fetchIsCalled = true
+        completionHandler(.success(Array(cities.values)))
+    }
+    
+    func create(city: Home.Location.City, completionHandler: @escaping (Result<Home.Location.City, CitiesStoreError>) -> ()) {
+        var city = city
+        generateCityID(city: &city)
+        cities[city.id!] = city
+        createIsCalled = true
+        completionHandler(.success(city))
+    }
+    
+    func delete(id: String, completionHandler: @escaping (Result<Home.Location.City, CitiesStoreError>) -> ()) {
+        deleteIsCalled = true
+        completionHandler(.success(Home.Location.City(code: 123, name: "Test", coordinates: CLLocationCoordinate2D(latitude: 123, longitude: 123))))
+    }
+    
+    func clearCities(completionHandler: @escaping (Result<Void, CitiesStoreError>) -> ()) {
+        cities.removeAll()
+        clearCitiesIsCalled = true
+        completionHandler(.success(()))
+    }
+    
 }

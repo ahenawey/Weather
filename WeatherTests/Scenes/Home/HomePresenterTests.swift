@@ -45,9 +45,8 @@ class HomePresenterTests: XCTestCase
   {
     var displaySomethingCalled = false
     
-    func displaySomething(viewModel: Home.Something.ViewModel)
-    {
-      displaySomethingCalled = true
+    func displayBookmarkedLocations(viewModel: Home.Location.ViewModel) {
+        displaySomethingCalled = true
     }
   }
   
@@ -58,10 +57,10 @@ class HomePresenterTests: XCTestCase
     // Given
     let spy = HomeDisplayLogicSpy()
     sut.viewController = spy
-    let response = Home.Something.Response()
+//    let response = Home.Location.Retrieve.Response()
     
     // When
-    sut.presentSomething(response: response)
+//    sut.presentSomething(response: response)
     
     // Then
     XCTAssertTrue(spy.displaySomethingCalled, "presentSomething(response:) should ask the view controller to display the result")

@@ -54,11 +54,11 @@ class HomeViewControllerTests: XCTestCase
   
   class HomeBusinessLogicSpy: HomeBusinessLogic
   {
+
     var doSomethingCalled = false
     
-    func doSomething(request: Home.Something.Request)
-    {
-      doSomethingCalled = true
+    func loadBookmarkedLocations() {
+        doSomethingCalled = true
     }
   }
   
@@ -80,11 +80,11 @@ class HomeViewControllerTests: XCTestCase
   func testDisplaySomething()
   {
     // Given
-    let viewModel = Home.Something.ViewModel()
+//    let viewModel = Home.Something.ViewModel()
     
     // When
     loadView()
-    sut.displaySomething(viewModel: viewModel)
+//    sut.displaySomething(viewModel: viewModel)
     
     // Then
     //XCTAssertEqual(sut.nameTextField.text, "", "displaySomething(viewModel:) should update the name text field")

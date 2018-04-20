@@ -45,9 +45,8 @@ class HomeInteractorTests: XCTestCase
   {
     var presentSomethingCalled = false
     
-    func presentSomething(response: Home.Something.Response)
-    {
-      presentSomethingCalled = true
+    func presentBookmarkedLocations(response: Home.Location.Retrieve.Response) {
+        presentSomethingCalled = true
     }
   }
   
@@ -58,10 +57,10 @@ class HomeInteractorTests: XCTestCase
     // Given
     let spy = HomePresentationLogicSpy()
     sut.presenter = spy
-    let request = Home.Something.Request()
+//    let request = Home.Something.Request()
     
     // When
-    sut.doSomething(request: request)
+//    sut.doSomething(request: request)
     
     // Then
     XCTAssertTrue(spy.presentSomethingCalled, "doSomething(request:) should ask the presenter to format the result")

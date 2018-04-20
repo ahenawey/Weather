@@ -21,6 +21,9 @@
 		9B2350CA2087D2EC00753B9F /* HomeInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2350C62087D2EC00753B9F /* HomeInteractorTests.swift */; };
 		9B2350CB2087D2EC00753B9F /* HomeWorkerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2350C72087D2EC00753B9F /* HomeWorkerTests.swift */; };
 		9B2350CC2087D2EC00753B9F /* HomePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2350C82087D2EC00753B9F /* HomePresenterTests.swift */; };
+		9BC295BC2089F1B200B036AC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295BB2089F1B200B036AC /* Result.swift */; };
+		9BC295BF208A019E00B036AC /* CitiesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295BE208A019E00B036AC /* CitiesStore.swift */; };
+		9BC295C1208A287800B036AC /* UserDefaultCitiesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295C0208A287800B036AC /* UserDefaultCitiesDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +55,9 @@
 		9B2350C62087D2EC00753B9F /* HomeInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractorTests.swift; sourceTree = "<group>"; };
 		9B2350C72087D2EC00753B9F /* HomeWorkerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWorkerTests.swift; sourceTree = "<group>"; };
 		9B2350C82087D2EC00753B9F /* HomePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenterTests.swift; sourceTree = "<group>"; };
+		9BC295BB2089F1B200B036AC /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		9BC295BE208A019E00B036AC /* CitiesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesStore.swift; sourceTree = "<group>"; };
+		9BC295C0208A287800B036AC /* UserDefaultCitiesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultCitiesDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,8 @@
 		9B2350982087AB1F00753B9F /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				9BC295BD208A018700B036AC /* Data */,
+				9BC295BA2089F18E00B036AC /* Extensions */,
 				9B2350D12087D33900753B9F /* Resources */,
 				9B2350CE2087D30900753B9F /* Scenes */,
 				9B2350992087AB1F00753B9F /* AppDelegate.swift */,
@@ -158,6 +166,23 @@
 				9B2350A52087AB2300753B9F /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		9BC295BA2089F18E00B036AC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9BC295BB2089F1B200B036AC /* Result.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9BC295BD208A018700B036AC /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				9BC295BE208A019E00B036AC /* CitiesStore.swift */,
+				9BC295C0208A287800B036AC /* UserDefaultCitiesDataStore.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,6 +289,9 @@
 				9B2350BF2087D2CA00753B9F /* HomePresenter.swift in Sources */,
 				9B2350C02087D2CA00753B9F /* HomeWorker.swift in Sources */,
 				9B2350C42087D2CA00753B9F /* HomeInteractor.swift in Sources */,
+				9BC295BF208A019E00B036AC /* CitiesStore.swift in Sources */,
+				9BC295C1208A287800B036AC /* UserDefaultCitiesDataStore.swift in Sources */,
+				9BC295BC2089F1B200B036AC /* Result.swift in Sources */,
 				9B23509A2087AB1F00753B9F /* AppDelegate.swift in Sources */,
 				9B2350C22087D2CA00753B9F /* HomeModels.swift in Sources */,
 				9B2350C32087D2CA00753B9F /* HomeViewController.swift in Sources */,
