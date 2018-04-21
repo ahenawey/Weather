@@ -36,9 +36,16 @@
 		9B512A05208AB06D006D6FFA /* WeatherDetailsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5129FF208AB06D006D6FFA /* WeatherDetailsInteractor.swift */; };
 		9B512A07208B2647006D6FFA /* WeatherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B512A06208B2647006D6FFA /* WeatherStore.swift */; };
 		9B512A09208B334C006D6FFA /* MobileAPIWeatherStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B512A08208B334C006D6FFA /* MobileAPIWeatherStore.swift */; };
+		9B512A0C208B5F26006D6FFA /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B512A0B208B5F26006D6FFA /* HelpViewController.swift */; };
 		9BC295BC2089F1B200B036AC /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295BB2089F1B200B036AC /* Result.swift */; };
 		9BC295BF208A019E00B036AC /* CitiesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295BE208A019E00B036AC /* CitiesStore.swift */; };
 		9BC295C1208A287800B036AC /* UserDefaultCitiesDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC295C0208A287800B036AC /* UserDefaultCitiesDataStore.swift */; };
+		9BFFD59B208DEF2200DD6DD1 /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD59A208DEF2200DD6DD1 /* help.html */; };
+		9BFFD5A1208DEF3900DD6DD1 /* home with delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD59C208DEF3800DD6DD1 /* home with delete.png */; };
+		9BFFD5A2208DEF3900DD6DD1 /* map with selected pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD59D208DEF3900DD6DD1 /* map with selected pin.png */; };
+		9BFFD5A3208DEF3900DD6DD1 /* map.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD59E208DEF3900DD6DD1 /* map.png */; };
+		9BFFD5A4208DEF3900DD6DD1 /* weather details.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD59F208DEF3900DD6DD1 /* weather details.png */; };
+		9BFFD5A5208DEF3900DD6DD1 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BFFD5A0208DEF3900DD6DD1 /* home.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,9 +92,16 @@
 		9B5129FF208AB06D006D6FFA /* WeatherDetailsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherDetailsInteractor.swift; sourceTree = "<group>"; };
 		9B512A06208B2647006D6FFA /* WeatherStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStore.swift; sourceTree = "<group>"; };
 		9B512A08208B334C006D6FFA /* MobileAPIWeatherStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileAPIWeatherStore.swift; sourceTree = "<group>"; };
+		9B512A0B208B5F26006D6FFA /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		9BC295BB2089F1B200B036AC /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		9BC295BE208A019E00B036AC /* CitiesStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesStore.swift; sourceTree = "<group>"; };
 		9BC295C0208A287800B036AC /* UserDefaultCitiesDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultCitiesDataStore.swift; sourceTree = "<group>"; };
+		9BFFD59A208DEF2200DD6DD1 /* help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = help.html; sourceTree = "<group>"; };
+		9BFFD59C208DEF3800DD6DD1 /* home with delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home with delete.png"; sourceTree = "<group>"; };
+		9BFFD59D208DEF3900DD6DD1 /* map with selected pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map with selected pin.png"; sourceTree = "<group>"; };
+		9BFFD59E208DEF3900DD6DD1 /* map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map.png; sourceTree = "<group>"; };
+		9BFFD59F208DEF3900DD6DD1 /* weather details.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weather details.png"; sourceTree = "<group>"; };
+		9BFFD5A0208DEF3900DD6DD1 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +181,7 @@
 				9B5129F9208AB040006D6FFA /* Weather Details */,
 				9B5129E3208A8D46006D6FFA /* Add New Location */,
 				9B2350CD2087D2FA00753B9F /* Home */,
+				9B512A0A208B5F0C006D6FFA /* Help */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -194,6 +209,7 @@
 		9B2350D12087D33900753B9F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9B512A16208B62F1006D6FFA /* html */,
 				9B2350A02087AB2300753B9F /* Assets.xcassets */,
 				9B2350A22087AB2300753B9F /* LaunchScreen.storyboard */,
 				9B2350A52087AB2300753B9F /* Info.plist */,
@@ -233,6 +249,27 @@
 				9B5129FF208AB06D006D6FFA /* WeatherDetailsInteractor.swift */,
 			);
 			path = "Weather Details";
+			sourceTree = "<group>";
+		};
+		9B512A0A208B5F0C006D6FFA /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				9B512A0B208B5F26006D6FFA /* HelpViewController.swift */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
+		9B512A16208B62F1006D6FFA /* html */ = {
+			isa = PBXGroup;
+			children = (
+				9BFFD59A208DEF2200DD6DD1 /* help.html */,
+				9BFFD59C208DEF3800DD6DD1 /* home with delete.png */,
+				9BFFD5A0208DEF3900DD6DD1 /* home.png */,
+				9BFFD59D208DEF3900DD6DD1 /* map with selected pin.png */,
+				9BFFD59E208DEF3900DD6DD1 /* map.png */,
+				9BFFD59F208DEF3900DD6DD1 /* weather details.png */,
+			);
+			path = html;
 			sourceTree = "<group>";
 		};
 		9BC295BA2089F18E00B036AC /* Extensions */ = {
@@ -335,8 +372,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BFFD5A3208DEF3900DD6DD1 /* map.png in Resources */,
+				9BFFD59B208DEF2200DD6DD1 /* help.html in Resources */,
+				9BFFD5A5208DEF3900DD6DD1 /* home.png in Resources */,
+				9BFFD5A4208DEF3900DD6DD1 /* weather details.png in Resources */,
 				9B2350A42087AB2300753B9F /* LaunchScreen.storyboard in Resources */,
 				9B2350A12087AB2300753B9F /* Assets.xcassets in Resources */,
+				9BFFD5A1208DEF3900DD6DD1 /* home with delete.png in Resources */,
+				9BFFD5A2208DEF3900DD6DD1 /* map with selected pin.png in Resources */,
 				9B23509F2087AB1F00753B9F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,6 +412,7 @@
 				9B5129EA208A8D74006D6FFA /* AddNewLocationPresenter.swift in Sources */,
 				9BC295BF208A019E00B036AC /* CitiesStore.swift in Sources */,
 				9B5129EE208A8D74006D6FFA /* AddNewLocationViewController.swift in Sources */,
+				9B512A0C208B5F26006D6FFA /* HelpViewController.swift in Sources */,
 				9BC295C1208A287800B036AC /* UserDefaultCitiesDataStore.swift in Sources */,
 				9BC295BC2089F1B200B036AC /* Result.swift in Sources */,
 				9B512A00208AB06D006D6FFA /* WeatherDetailsPresenter.swift in Sources */,
