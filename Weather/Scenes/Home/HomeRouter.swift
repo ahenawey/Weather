@@ -39,17 +39,17 @@ class HomeRouter: NSObject, HomeRoutingLogic, HomeDataPassing
     
     func routeToDetails(segue: UIStoryboardSegue?)
     {
-        //  if let segue = segue {
-        //    let destinationVC = segue.destination as! SomewhereViewController
-        //    var destinationDS = destinationVC.router!.dataStore!
-        //    passDataToDetails(source: dataStore!, destination: &destinationDS)
-        //  }
+          if let segue = segue {
+            let destinationVC = segue.destination as! WeatherDetailsViewController
+            var destinationDS = destinationVC.router!.dataStore!
+            passDataToDetails(source: dataStore!, destination: &destinationDS)
+          }
     }
     
     // MARK: Passing data
     
-    //func passDataToDetails(source: HomeDataStore, destination: inout SomewhereDataStore)
-    //{
-    //  destination.name = source.name
-    //}
+    func passDataToDetails(source: HomeDataStore, destination: inout WeatherDetailsDataStore)
+    {
+      destination.selectedCity = source.selectedCity
+    }
 }
