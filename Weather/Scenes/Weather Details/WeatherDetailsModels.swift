@@ -17,12 +17,6 @@ enum WeatherDetails
     // MARK: Use cases
     struct Forecast: Decodable {
         
-        fileprivate struct Main: Decodable {
-            var temperature: Double
-            var pressure: Int
-            var humidity: Int
-        }
-        
         struct Wind: Decodable{
             var speed: Double
             var degrees: Int
